@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ago/ago.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,30 +14,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Attendance Records'),
         ),
-        body: Column(
-          children: [
-            ToggleButtons(
-              children: <Widget>[
-                const Text('Time Ago'),
-                const Text('Date & Time'),
-              ],
-              onPressed: (int index) {
-                setState(() {
-                  if (index == 0) {
-                    timeFormat.value = 'time_ago';
-                  } else {
-                    timeFormat.value = 'dd MMM yyyy, h:mm a';
-                  }
-                });
-              },
-              isSelected: [
-                timeFormat.value == 'time_ago',
-                timeFormat.value == 'dd MMM yyyy, h:mm a'
-              ],
-            ),
-            const AttendanceRecordList(),
-          ],
-        ),
+        body: AttendanceRecordList(),
       ),
     );
   }
@@ -52,22 +27,15 @@ class AttendanceRecord {
   AttendanceRecord({required this.date, required this.name});
 }
 
-class AttendanceRecordList extends StatefulWidget {
-  const AttendanceRecordList({super.key});
-
-  @override
-  State<AttendanceRecordList> createState() => _AttendanceRecordListState();
-}
-
-class _AttendanceRecordListState extends State<AttendanceRecordList> {
+class AttendanceRecordList extends StatelessWidget {
   final List<AttendanceRecord> attendanceRecords = [
-    AttendanceRecord(date: DateTime.now(), name: 'John Doe'),
+    AttendanceRecord(date: DateTime.now(), name: 'Vendico Juan'),
     AttendanceRecord(
-        date: DateTime.now().add(const Duration(hours: 1)), name: 'Jane Doe'),
-    // Add more attendance records here
+        date: DateTime.now().add(const Duration(hours: 1)),
+        name: 'Kevin Mania'),
   ];
 
-  final ValueNotifier<String> timeFormat = ValueNotifier('time_ago');
+  AttendanceRecordList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +47,7 @@ class _AttendanceRecordListState extends State<AttendanceRecordList> {
         AttendanceRecord record = attendanceRecords[index];
         return ListTile(
           title: Text(record.name),
-          subtitle: Text(
-            DateFormat(timeFormat.value).format(record.date),
-          ),
+          subtitle: Text(record.date.toString()),
         );
       },
     );
